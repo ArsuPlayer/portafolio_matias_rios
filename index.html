@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="es" data-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matías Ríos | Desarrollador Web</title>
-    
+
     <!-- Hoja de Estilos Principal -->
     <link rel="stylesheet" href="style.css">
-    
+
     <!-- FontAwesome para Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Fira+Code:wght@400;600&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
 
     <!-- Luces de Fondo Dinámicas -->
@@ -26,7 +30,7 @@
     <header>
         <nav class="navbar">
             <a href="#inicio" class="logo">&lt;Matías<span>Ríos</span> /&gt;</a>
-            
+
             <ul class="nav-menu" id="navMenu">
                 <li><a href="#inicio" class="nav-link active">Inicio</a></li>
                 <li><a href="#sobre-mi" class="nav-link">Sobre Mí</a></li>
@@ -53,12 +57,13 @@
                 <div class="hero-badge">
                     <i class="fas fa-circle-dot"></i> Disponible para Proyectos y Prácticas
                 </div>
-                <h1>    <span>Matías Ríos</span></h1>
+                <h1> <span>Matías Ríos</span></h1>
                 <div class="typewriter-text">
                     Desarrollador <span id="typewriter"></span>
                 </div>
-                <p>Soy un estudiante apasionado en Skillnest construyendo soluciones web funcionales, modernas y atractivas para el público.</p>
-                
+                <p>Soy un estudiante apasionado en Skillnest construyendo soluciones web funcionales, modernas y
+                    atractivas para el público.</p>
+
                 <div class="hero-buttons">
                     <a href="#proyectos" class="btn btn-primary">
                         Ver Mis Proyectos <i class="fas fa-arrow-right"></i>
@@ -97,15 +102,20 @@
 
             <div class="about-grid">
                 <div class="about-card">
-                    <p>¡Hola! Soy <strong>Matías Ríos</strong>, desarrollador web front-end en formación continua dentro del programa <strong>Skillnest</strong>.</p>
-                    <p>Me enfoco en transformar ideas en código estructurado, accesible y visualmente impactante. Mi viaje en la programación me ha llevado a adquirir habilidades sólidas en la web moderna y control de versiones.</p>
-                    <p>Busco constantes desafíos que me permitan crecer profesionalmente e incorporarme a equipos colaborativos de desarrollo.</p>
+                    <p>¡Hola! Soy <strong>Matías Ríos</strong>, desarrollador web front-end en formación continua dentro
+                        del programa <strong>Skillnest</strong>.</p>
+                    <p>Me enfoco en transformar ideas en código estructurado, accesible y visualmente impactante. Mi
+                        viaje en la programación me ha llevado a adquirir habilidades sólidas en la web moderna y
+                        control de versiones.</p>
+                    <p>Busco constantes desafíos que me permitan crecer profesionalmente e incorporarme a equipos
+                        colaborativos de desarrollo.</p>
                 </div>
 
                 <div class="video-container">
                     <div class="video-wrapper">
                         <!-- Reemplaza el src con tu video de presentación de YouTube/Vimeo -->
-                        <iframe src="https://www.youtube.com/embed/" title="Video de presentación de Matías Ríos" allowfullscreen></iframe>
+                        <iframe src="https://www.youtube.com/embed/" title="Video de presentación de Matías Ríos"
+                            allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
@@ -161,42 +171,55 @@
             <div class="filter-buttons">
                 <button class="filter-btn active" data-filter="all">Todos</button>
                 <button class="filter-btn" data-filter="js">JavaScript</button>
+                <button class="filter-btn" data-filter="python">Python / IoT</button>
                 <button class="filter-btn" data-filter="html-css">HTML/CSS</button>
             </div>
 
             <div class="projects-grid">
-                <!-- Proyecto 1 -->
-                <article class="project-card" data-category="js">
+                <!-- Proyecto 1: GutenVox -->
+                <article class="project-card" data-category="python">
                     <div class="project-img">
-                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80" alt="Aplicación Web Interactiva">
+                        <!-- Puedes guardar la captura de tu proyecto como 'gutenvox.png' en tu carpeta local o usar una imagen referencial -->
+                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80"
+                            alt="GutenVox - Robot Lector e Intérprete">
                     </div>
                     <div class="project-info">
-                        <h3>Aplicación Web Interactiva</h3>
-                        <p>Plataforma interactiva con filtros dinámicos, gestión de estado local y renderizado basado en JavaScript.</p>
+                        <h3>GutenVox: Robot Lector e Intérprete</h3>
+                        <p>Dispositivo IoT y panel web inteligente capaz de escanear páginas físicas mediante OCR en
+                            tiempo real, traducir texto a múltiples idiomas y sintetizar lectura por voz con motor gTTS.
+                        </p>
                         <div class="tags">
-                            <span>HTML5</span><span>CSS3</span><span>JavaScript</span>
+                            <span>PYTHON</span><span>FLASK</span><span>OPENCV</span><span>TESSERACT
+                                OCR</span><span>HTML5</span><span>CSS3</span><span>JAVASCRIPT</span>
                         </div>
                         <div class="project-links">
-                            <a href="#" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i> Demo</a>
-                            <a href="#" target="_blank" class="btn-link"><i class="fab fa-github"></i> Código</a>
+                            <a href="#" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i>
+                                Demo</a>
+                            <a href="https://github.com/ArsuPlayer/GutenVox_Web" target="_blank" class="btn-link"><i
+                                    class="fab fa-github"></i> Código</a>
                         </div>
                     </div>
                 </article>
 
-                <!-- Proyecto 2 -->
-                <article class="project-card" data-category="html-css">
+                <!-- Proyecto 2: Querido Diario -->
+                <article class="project-card" data-category="python">
                     <div class="project-img">
-                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" alt="Landing Page Responsiva">
+                        <img src="https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=600&q=80"
+                            alt="Querido Diario - Sistema de Gestión Personal">
                     </div>
                     <div class="project-info">
-                        <h3>Landing Page Responsiva</h3>
-                        <p>Sitio web completamente adaptable a teléfonos, tablets y computadores usando CSS Grid moderno.</p>
+                        <h3>Querido Diario — Sistema de Gestión Personal</h3>
+                        <p>Sistema web completo para el registro de diario personal con autenticación de usuarios,
+                            notificaciones flotantes interactivas (Toasts) y manejo de errores 404.</p>
                         <div class="tags">
-                            <span>HTML5</span><span>CSS3</span>
+                            <span>PYTHON</span><span>FLASK</span><span>MYSQL</span><span>BOOTSTRAP
+                                5</span><span>GIT</span><span>GITHUB</span>
                         </div>
                         <div class="project-links">
-                            <a href="#" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i> Demo</a>
-                            <a href="#" target="_blank" class="btn-link"><i class="fab fa-github"></i> Código</a>
+                            <a href="#" target="_blank" class="btn-link"><i
+                                    class="fas fa-external-link-alt"></i> Demo</a>
+                            <a href="https://github.com/ArsuPlayer/certificacion_2_matias_rios_2026_10_20"
+                                target="_blank" class="btn-link"><i class="fab fa-github"></i> Código</a>
                         </div>
                     </div>
                 </article>
@@ -229,8 +252,10 @@
                     </div>
 
                     <div class="social-links">
-                        <a href="https://linkedin.com" target="_blank" class="social-btn" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="https://github.com/ArsuPlayer" target="_blank" class="social-btn" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="https://linkedin.com" target="_blank" class="social-btn" aria-label="LinkedIn"><i
+                                class="fab fa-linkedin-in"></i></a>
+                        <a href="https://github.com/ArsuPlayer" target="_blank" class="social-btn"
+                            aria-label="GitHub"><i class="fab fa-github"></i></a>
                     </div>
                 </div>
 
@@ -260,4 +285,5 @@
     <!-- Script Principal -->
     <script src="script.js"></script>
 </body>
+
 </html>
