@@ -1,289 +1,1101 @@
 <!DOCTYPE html>
 <html lang="es" data-theme="dark">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matías Ríos | Desarrollador Web</title>
-
-    <!-- Hoja de Estilos Principal -->
-    <link rel="stylesheet" href="style.css">
-
-    <!-- FontAwesome para Iconos -->
+    <title>Matías Ríos // Portafolio Front-End & IoT</title>
+    
+    <!-- External Libraries & Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Fira+Code:wght@400;600&display=swap"
-        rel="stylesheet">
-</head>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
 
+    <style>
+        /* ==========================================================================
+           1. DESIGN SYSTEM & CYBERPUNK MENU INTERFACE PALETTE
+           ========================================================================== */
+        :root {
+            --bg-dark: #080204;
+            --bg-card: rgba(22, 6, 12, 0.88);
+            --bg-card-hover: rgba(36, 10, 20, 0.95);
+            --red-main: #ff2a4b;
+            --red-dark: #800a1d;
+            --red-glow: rgba(255, 42, 75, 0.35);
+            --cyan-accent: #36e2ec;
+            --cyan-glow: rgba(54, 226, 236, 0.4);
+            --text-primary: #f8e6e8;
+            --text-muted: #b38890;
+            --border-red: rgba(255, 42, 75, 0.45);
+            --border-cyan: rgba(54, 226, 236, 0.55);
+            
+            --font-display: 'Orbitron', sans-serif;
+            --font-tech: 'Rajdhani', sans-serif;
+            --font-code: 'Fira Code', monospace;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            
+            --radius-chamfer: 10px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 16px;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 20%, rgba(255, 42, 75, 0.12) 0%, transparent 75%),
+                radial-gradient(circle at 80% 80%, rgba(54, 226, 236, 0.05) 0%, transparent 50%),
+                linear-gradient(rgba(255, 42, 75, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 42, 75, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+        }
+
+        /* Custom Red HUD Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+            border-left: 1px solid var(--border-red);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--red-main);
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--cyan-accent);
+        }
+
+        /* Ambient HUD Border Lines */
+        .ambient-grid {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+            box-shadow: inset 0 0 100px rgba(255, 42, 75, 0.15);
+        }
+
+        /* ==========================================================================
+           2. REUSABLE CYBERPUNK HUD COMPONENTS
+           ========================================================================== */
+        .hud-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-red);
+            clip-path: polygon(
+                0 0, 
+                calc(100% - var(--radius-chamfer)) 0, 
+                100% var(--radius-chamfer), 
+                100% 100%, 
+                var(--radius-chamfer) 100%, 
+                0 calc(100% - var(--radius-chamfer))
+            );
+            position: relative;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            transition: all 0.25s ease;
+        }
+
+        .hud-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 3px; height: 100%;
+            background: var(--red-main);
+        }
+
+        .hud-card-cyan::before {
+            background: var(--cyan-accent);
+        }
+
+        .hud-card-cyan {
+            border-color: var(--border-cyan);
+        }
+
+        /* Cyber Buttons (Matching HUD Settings Toggle Style) */
+        .cyber-btn {
+            background: rgba(255, 42, 75, 0.1);
+            border: 1px solid var(--red-main);
+            color: var(--red-main);
+            font-family: var(--font-tech);
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 10px 22px;
+            cursor: pointer;
+            text-transform: uppercase;
+            clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .cyber-btn:hover {
+            background: var(--red-main);
+            color: #000;
+            box-shadow: 0 0 20px var(--red-glow);
+            transform: translateY(-2px);
+        }
+
+        .cyber-btn-cyan {
+            background: rgba(54, 226, 236, 0.1);
+            border-color: var(--cyan-accent);
+            color: var(--cyan-accent);
+        }
+
+        .cyber-btn-cyan:hover {
+            background: var(--cyan-accent);
+            color: #000;
+            box-shadow: 0 0 20px var(--cyan-glow);
+        }
+
+        .badge-tag {
+            font-family: var(--font-code);
+            font-size: 12px;
+            padding: 4px 10px;
+            background: rgba(255, 42, 75, 0.12);
+            border: 1px solid var(--border-red);
+            color: var(--red-main);
+            display: inline-block;
+            letter-spacing: 0.5px;
+        }
+
+        /* ==========================================================================
+           3. LAYOUT & TOP MENU NAVIGATION (CYBERPUNK 2077 HUD TOP BAR)
+           ========================================================================== */
+        .hud-wrapper {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Top HUD Navigation Bar (Matching game settings menu in reference image) */
+        .top-hud-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--red-main);
+            padding-bottom: 16px;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .nav-bracket {
+            font-family: var(--font-code);
+            color: var(--red-main);
+            font-size: 18px;
+            font-weight: bold;
+            padding: 4px 10px;
+            border: 1px solid var(--border-red);
+        }
+
+        .nav-tab-item {
+            background: transparent;
+            border: none;
+            color: var(--red-main);
+            font-family: var(--font-tech);
+            font-size: 19px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            padding: 8px 24px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .nav-tab-item:hover {
+            color: #fff;
+            text-shadow: 0 0 8px var(--red-main);
+        }
+
+        /* Active Tab - Cyan Box Fill with Dark Text (Like in HUD Settings image) */
+        .nav-tab-item.active {
+            background: var(--cyan-accent);
+            color: #060e12;
+            font-weight: 800;
+            clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+            box-shadow: 0 0 16px var(--cyan-glow);
+        }
+
+        /* ==========================================================================
+           4. PROFILE HEADER & MODULE VIEWPORTS
+           ========================================================================== */
+        .profile-banner {
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            border-left: 4px solid var(--red-main);
+        }
+
+        .profile-title {
+            font-family: var(--font-display);
+            font-size: 42px;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: 2px;
+            line-height: 1.1;
+        }
+
+        .profile-title span {
+            color: var(--red-main);
+            text-shadow: 0 0 12px var(--red-glow);
+        }
+
+        .typewriter-wrapper {
+            font-family: var(--font-code);
+            font-size: 18px;
+            color: var(--cyan-accent);
+            min-height: 28px;
+        }
+
+        /* Grid Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .metric-box {
+            background: rgba(10, 2, 5, 0.6);
+            border-left: 3px solid var(--red-main);
+            padding: 12px 16px;
+        }
+
+        .metric-box.cyan {
+            border-left-color: var(--cyan-accent);
+        }
+
+        .metric-label {
+            font-family: var(--font-code);
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .metric-value {
+            font-family: var(--font-tech);
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            margin-top: 2px;
+        }
+
+        /* Viewport Module Container */
+        .module-viewport {
+            min-height: 480px;
+        }
+
+        .module-pane {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out forwards;
+        }
+
+        .module-pane.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==========================================================================
+           5. SECTION 1: SOBRE MÍ
+           ========================================================================== */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 880px) {
+            .about-grid { grid-template-columns: 1fr; }
+        }
+
+        .bio-card {
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .bio-card h3 {
+            font-family: var(--font-display);
+            font-size: 20px;
+            color: var(--red-main);
+            border-bottom: 1px solid var(--border-red);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bio-card p {
+            font-size: 16px;
+            color: var(--text-primary);
+            line-height: 1.75;
+        }
+
+        .video-card {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .iframe-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border: 2px solid var(--border-red);
+            background: #000;
+        }
+
+        .iframe-wrapper iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border: 0;
+        }
+
+        /* ==========================================================================
+           6. SECTION 2: HABILIDADES
+           ========================================================================== */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 22px;
+        }
+
+        .skill-card {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .skill-card:hover {
+            border-color: var(--cyan-accent);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px var(--cyan-glow);
+        }
+
+        .skill-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-family: var(--font-tech);
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .skill-header i {
+            color: var(--red-main);
+            font-size: 28px;
+        }
+
+        .skill-desc {
+            font-size: 14.5px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        /* ==========================================================================
+           7. SECTION 3: PROYECTOS
+           ========================================================================== */
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            background: rgba(10, 2, 5, 0.6);
+            border: 1px solid var(--border-red);
+            color: var(--text-muted);
+            font-family: var(--font-tech);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            border-color: var(--cyan-accent);
+            color: var(--cyan-accent);
+            background: rgba(54, 226, 236, 0.12);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 24px;
+        }
+
+        .project-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .project-card:hover {
+            border-color: var(--cyan-accent);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 28px var(--cyan-glow);
+        }
+
+        .project-thumb {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border-red);
+            background: #000;
+        }
+
+        .project-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .project-card:hover .project-thumb img {
+            transform: scale(1.06);
+        }
+
+        .project-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            flex: 1;
+        }
+
+        .project-body h3 {
+            font-family: var(--font-tech);
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .project-body p {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Modal Inspector */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(8, 2, 4, 0.92);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 650px;
+            width: 100%;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            border-color: var(--cyan-accent);
+        }
+
+        /* ==========================================================================
+           8. SECTION 4: CONTACTO
+           ========================================================================== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 880px) {
+            .contact-grid { grid-template-columns: 1fr; }
+        }
+
+        .contact-info {
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .contact-tile {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(10, 2, 5, 0.6);
+            border: 1px solid var(--border-red);
+        }
+
+        .contact-tile i {
+            font-size: 24px;
+            color: var(--red-main);
+        }
+
+        .contact-tile h4 {
+            font-family: var(--font-tech);
+            font-size: 15px;
+            color: var(--cyan-accent);
+        }
+
+        .contact-tile p {
+            font-family: var(--font-code);
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .social-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .social-btn {
+            width: 46px;
+            height: 46px;
+            background: rgba(10, 2, 5, 0.6);
+            border: 1px solid var(--red-main);
+            color: var(--red-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .social-btn:hover {
+            background: var(--red-main);
+            color: #000;
+            box-shadow: 0 0 16px var(--red-glow);
+        }
+
+        .form-card {
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-family: var(--font-code);
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .form-group input, .form-group textarea {
+            background: rgba(10, 2, 5, 0.7);
+            border: 1px solid var(--border-red);
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: 15px;
+            padding: 12px 16px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--cyan-accent);
+            box-shadow: 0 0 12px var(--cyan-glow);
+        }
+
+        .form-feedback {
+            font-family: var(--font-code);
+            font-size: 13.5px;
+            min-height: 20px;
+        }
+
+        /* Footer */
+        footer.hud-footer {
+            border-top: 1px solid var(--border-red);
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-code);
+            font-size: 13px;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+    </style>
+</head>
 <body>
 
-    <!-- Luces de Fondo Dinámicas -->
-    <div class="bg-glow"></div>
-    <div class="bg-glow-2"></div>
+    <div class="ambient-grid"></div>
 
-    <!-- Navegación -->
-    <header>
-        <nav class="navbar">
-            <a href="#inicio" class="logo">&lt;Matías<span>Ríos</span> /&gt;</a>
-
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="#inicio" class="nav-link active">Inicio</a></li>
-                <li><a href="#sobre-mi" class="nav-link">Sobre Mí</a></li>
-                <li><a href="#habilidades" class="nav-link">Habilidades</a></li>
-                <li><a href="#proyectos" class="nav-link">Proyectos</a></li>
-                <li><a href="#contacto" class="nav-link">Contacto</a></li>
-            </ul>
-
-            <div class="nav-actions">
-                <button class="theme-btn" id="themeToggle" aria-label="Cambiar tema">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
+    <div class="hud-wrapper">
+        
+        <!-- Game-inspired HUD Top Bar Menu -->
+        <nav class="top-hud-nav">
+            <span class="nav-bracket">1</span>
+            <button class="nav-tab-item active" data-tab="sobre-mi">SOBRE MÍ</button>
+            <button class="nav-tab-item" data-tab="habilidades">HABILIDADES</button>
+            <button class="nav-tab-item" data-tab="proyectos">PROYECTOS</button>
+            <button class="nav-tab-item" data-tab="contacto">CONTACTO</button>
+            <span class="nav-bracket">3</span>
         </nav>
-    </header>
 
-    <main>
-        <!-- Hero Section -->
-        <section id="inicio" class="hero">
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <i class="fas fa-circle-dot"></i> Disponible para Proyectos y Prácticas
-                </div>
-                <h1> <span>Matías Ríos</span></h1>
-                <div class="typewriter-text">
-                    Desarrollador <span id="typewriter"></span>
-                </div>
-                <p>Soy un estudiante apasionado en Skillnest construyendo soluciones web funcionales, modernas y
-                    atractivas para el público.</p>
+        <!-- Profile Header Section -->
+        <section class="hud-card profile-banner">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span class="badge-tag"><i class="fa-solid fa-terminal"></i> FRONT-END DEVELOPER</span>
+            </div>
+            <h1 class="profile-title">MATÍAS <span>RÍOS</span></h1>
+            
+            <div class="typewriter-wrapper">
+                Especialidad: <span id="typewriter"></span>
+            </div>
 
-                <div class="hero-buttons">
-                    <a href="#proyectos" class="btn btn-primary">
-                        Ver Mis Proyectos <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="#contacto" class="btn btn-secondary">
-                        Contáctame <i class="fas fa-envelope"></i>
-                    </a>
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <div class="metric-label">Programa</div>
+                    <div class="metric-value">Skillnest 2026</div>
+                </div>
+                <div class="metric-box cyan">
+                    <div class="metric-label">Disponibilidad</div>
+                    <div class="metric-value" style="color: var(--cyan-accent);">Proyectos / Prácticas</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">Pila Principal</div>
+                    <div class="metric-value">HTML/ CSS / JS / Python / IoT</div>
                 </div>
             </div>
         </section>
 
-        <!-- Banner Marquee -->
-        <div class="marquee-container">
-            <div class="marquee-content">
-                <div class="marquee-item"><i class="fab fa-html5"></i> HTML5</div>
-                <div class="marquee-item"><i class="fab fa-css3-alt"></i> CSS3</div>
-                <div class="marquee-item"><i class="fab fa-js"></i> JavaScript</div>
-                <div class="marquee-item"><i class="fab fa-git-alt"></i> Git</div>
-                <div class="marquee-item"><i class="fab fa-github"></i> GitHub</div>
-                <div class="marquee-item"><i class="fas fa-mobile-screen"></i> Responsive Design</div>
-                <!-- Duplicado para loop continuo -->
-                <div class="marquee-item"><i class="fab fa-html5"></i> HTML5</div>
-                <div class="marquee-item"><i class="fab fa-css3-alt"></i> CSS3</div>
-                <div class="marquee-item"><i class="fab fa-js"></i> JavaScript</div>
-                <div class="marquee-item"><i class="fab fa-git-alt"></i> Git</div>
-                <div class="marquee-item"><i class="fab fa-github"></i> GitHub</div>
+        <!-- Viewport Modules -->
+        <main class="module-viewport">
+            
+            <!-- Pane 1: Sobre Mí -->
+            <div id="sobre-mi" class="module-pane active">
+                <div class="about-grid">
+                    <div class="hud-card bio-card">
+                        <h3><i class="fa-solid fa-id-card"></i> Presentación Profesional</h3>
+                        <p>Soy <strong>Matías Ríos</strong>, desarrollador web front-end apasionado por crear plataformas modernas, funcionales y con alto grado de interactividad visual.</p>
+                        <p>En el programa <strong>Skillnest</strong>, he adquirido competencias sólidas en la maquetación semántica, programación orientada a objetos en JavaScript y consumo de APIs con servicios backend construidos en Flask.</p>
+                    </div>
+
+                    <div class="hud-card video-card">
+                        <div class="iframe-wrapper">
+                            <iframe src="https://www.youtube.com/embed/3NO4hrKefHY" title="Video de presentación de Matías Ríos" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <!-- Pane 2: Habilidades -->
+            <div id="habilidades" class="module-pane">
+                <div class="skills-grid">
+                    
+                    <div class="hud-card skill-card">
+                        <div class="skill-header">
+                            <i class="fab fa-html5"></i>
+                            <span>HTML5 & CSS3</span>
+                        </div>
+                        <p class="skill-desc">Maquetación web estructurada y semántica. Diseño responsivo avanzado con CSS Grid, Flexbox y arquitecturas visuales modernas.</p>
+                        <div class="skill-tags">
+                            <span class="badge-tag">Semántica</span>
+                            <span class="badge-tag">Flexbox/Grid</span>
+                            <span class="badge-tag">Responsive</span>
+                        </div>
+                    </div>
+
+                    <div class="hud-card skill-card">
+                        <div class="skill-header">
+                            <i class="fab fa-js"></i>
+                            <span>JavaScript ES6+</span>
+                        </div>
+                        <p class="skill-desc">Programación orientada a objetos, manipulación del DOM, consumo asíncrono de APIs con Fetch y desarrollo de interfaces dinámicas.</p>
+                        <div class="skill-tags">
+                            <span class="badge-tag">POO</span>
+                            <span class="badge-tag">Async/Fetch</span>
+                            <span class="badge-tag">DOM</span>
+                        </div>
+                    </div>
+
+                    <div class="hud-card skill-card">
+                        <div class="skill-header">
+                            <i class="fab fa-python"></i>
+                            <span>Python & Flask</span>
+                        </div>
+                        <p class="skill-desc">Desarrollo de servicios backend ligeros, creación de APIs RESTful, integración con bases de datos MySQL y flujos para sistemas IoT.</p>
+                        <div class="skill-tags">
+                            <span class="badge-tag">REST API</span>
+                            <span class="badge-tag">Flask</span>
+                            <span class="badge-tag">MySQL</span>
+                        </div>
+                    </div>
+
+                    <div class="hud-card skill-card">
+                        <div class="skill-header">
+                            <i class="fab fa-git-alt"></i>
+                            <span>Git & GitHub</span>
+                        </div>
+                        <p class="skill-desc">Control de versiones, trabajo colaborativo en ramas, resolución de conflictos y despliegue continuo en plataformas cloud.</p>
+                        <div class="skill-tags">
+                            <span class="badge-tag">Git Flow</span>
+                            <span class="badge-tag">GitHub</span>
+                            <span class="badge-tag">Deployment</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Pane 3: Proyectos -->
+            <div id="proyectos" class="module-pane">
+                <div class="filter-bar">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="js">JavaScript / IoT</button>
+                    <button class="filter-btn" data-filter="python">Python / Flask</button>
+                </div>
+
+                <div class="projects-grid">
+                    
+                    <!-- Proyecto 1: GutenVox -->
+                    <article class="hud-card project-card" data-category="js">
+                        <div class="project-thumb">
+                            <img src="gutenvox-preview.png" alt="GutenVox" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80'">
+                            <span class="badge-tag" style="position: absolute; top: 10px; right: 10px; background: var(--red-main); color: #fff; border: none;">Destacado</span>
+                        </div>
+                        <div class="project-body">
+                            <h3>GutenVox: Robot Lector e Intérprete</h3>
+                            <p>Dispositivo IoT y panel web inteligente capaz de escanear páginas físicas mediante OCR en tiempo real, traducir texto a múltiples idiomas y sintetizar lectura por voz con motor gTTS.</p>
+                            <div class="skill-tags">
+                                <span class="badge-tag">PYTHON</span>
+                                <span class="badge-tag">FLASK</span>
+                                <span class="badge-tag">OPENCV</span>
+                                <span class="badge-tag">TESSERACT</span>
+                                <span class="badge-tag">JS</span>
+                            </div>
+                            <div class="project-actions">
+                                <button class="cyber-btn inspect-btn" data-title="GutenVox: Robot Lector e Intérprete" data-desc="Sistema IoT completo que integra captura de imágenes con OpenCV, extracción de texto mediante Tesseract OCR, API REST en Flask para traducción instantánea y síntesis de voz automática con gTTS. Diseñado para accesibilidad y lectura inteligente."><i class="fas fa-search-plus"></i> Detalle</button>
+                                <a href="https://github.com/ArsuPlayer/GutenVox-Robot" target="_blank" class="cyber-btn cyber-btn-cyan"><i class="fab fa-github"></i> Código</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Proyecto 2: Querido Diario -->
+                    <article class="hud-card project-card" data-category="python">
+                        <div class="project-thumb">
+                            <img src="https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=600&q=80" alt="Querido Diario">
+                            <span class="badge-tag" style="position: absolute; top: 10px; right: 10px; background: var(--cyan-accent); color: #000; border: none;">Online</span>
+                        </div>
+                        <div class="project-body">
+                            <h3>Querido Diario — Gestión Personal</h3>
+                            <p>Sistema web completo para el registro de diario personal con autenticación de usuarios, notificaciones flotantes interactivas (Toasts) y manejo de errores 404.</p>
+                            <div class="skill-tags">
+                                <span class="badge-tag">PYTHON</span>
+                                <span class="badge-tag">FLASK</span>
+                                <span class="badge-tag">MYSQL</span>
+                                <span class="badge-tag">BOOTSTRAP 5</span>
+                            </div>
+                            <div class="project-actions">
+                                <a href="https://github.com/ArsuPlayer/certificacion_2_matias_rios_2026_10_20" target="_blank" class="cyber-btn cyber-btn-cyan"><i class="fab fa-github"></i> Código</a>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+
+            <!-- Pane 4: Contacto -->
+            <div id="contacto" class="module-pane">
+                <div class="contact-grid">
+                    
+                    <div class="hud-card contact-info">
+                        <div class="contact-tile">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>Correo Electrónico</h4>
+                                <p>matiasrios.rodri@gmail.com</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-tile">
+                            <i class="fab fa-linkedin"></i>
+                            <div>
+                                <h4>LinkedIn</h4>
+                                <p>linkedin.com/in/matías-ríos-aa7540441/</p>
+                            </div>
+                        </div>
+
+                        <div class="social-row">
+                            <a href="https://www.linkedin.com/in/mat%C3%ADas-r%C3%ADos-aa7540441/" target="_blank" class="social-btn" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="https://github.com/ArsuPlayer" target="_blank" class="social-btn" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+
+                    <form id="contactForm" action="https://formspree.io/f/xknlqwbv" method="POST" class="hud-card hud-card-cyan form-card">
+                        <div class="form-group">
+                            <label for="name">Tu Nombre Completo</label>
+                            <input type="text" id="name" name="name" placeholder="Escribe tu nombre..." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Tu Correo Electrónico</label>
+                            <input type="email" id="email" name="email" placeholder="ejemplo@correo.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Mensaje</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                        </div>
+                        <button type="submit" id="submitBtn" class="cyber-btn cyber-btn-cyan" style="justify-content: center;">
+                            <span id="btnText">Enviar Mensaje</span> <i class="fas fa-paper-plane" id="btnIcon"></i>
+                        </button>
+                        <p id="formFeedback" class="form-feedback"></p>
+                    </form>
+
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="hud-footer">
+            <p>&copy; 2026 Matías Ríos</p>
+            <p>FRONT-END & IOT DEVELOPMENT</p>
+        </footer>
+
+    </div>
+
+    <!-- Inspector Modal Window -->
+    <div class="modal-overlay" id="projectModal">
+        <div class="hud-card modal-content">
+            <h3 id="modalTitle" style="font-family: var(--font-tech); font-size: 24px; color: var(--cyan-accent);"></h3>
+            <p id="modalDesc" style="font-size: 15.5px; color: var(--text-primary); line-height: 1.7;"></p>
+            <button class="cyber-btn cyber-btn-cyan" id="closeModalBtn" style="align-self: flex-end; margin-top: 10px;">Cerrar</button>
         </div>
+    </div>
 
-        <!-- Sobre Mí -->
-        <section id="sobre-mi" class="section reveal">
-            <div class="section-header">
-                <span class="section-subtitle">Conóceme</span>
-                <h2 class="section-title">Sobre Mí & Presentación</h2>
-            </div>
+    <!-- Interactive Script Code -->
+    <script>
+        /* ==========================================================================
+           1. TAB NAVIGATION SYSTEM
+           ========================================================================== */
+        const navTabItems = document.querySelectorAll('.nav-tab-item');
+        const modulePanes = document.querySelectorAll('.module-pane');
 
-            <div class="about-grid">
-                <div class="about-card">
-                    <p>¡Hola! Soy <strong>Matías Ríos</strong>, desarrollador web front-end en formación continua dentro
-                        del programa <strong>Skillnest</strong>.</p>
-                    <p>Me enfoco en transformar ideas en código estructurado, accesible y visualmente impactante. Mi
-                        viaje en la programación me ha llevado a adquirir habilidades sólidas en la web moderna y
-                        control de versiones.</p>
-                    <p>Busco constantes desafíos que me permitan crecer profesionalmente e incorporarme a equipos
-                        colaborativos de desarrollo.</p>
-                </div>
+        navTabItems.forEach(btn => {
+            btn.addEventListener('click', () => {
+                navTabItems.forEach(b => b.classList.remove('active'));
+                modulePanes.forEach(p => p.classList.remove('active'));
 
-                <div class="video-container">
-                    <div class="video-wrapper">
-                        <!-- Reemplaza el src con tu video de presentación de YouTube/Vimeo -->
-                        <iframe src="https://www.youtube.com/embed/" title="Video de presentación de Matías Ríos"
-                            allowfullscreen></iframe>
-                    </div>
-                </div>
-            </div>
-        </section>
+                btn.classList.add('active');
+                const targetId = btn.getAttribute('data-tab');
+                const targetPane = document.getElementById(targetId);
+                if (targetPane) targetPane.classList.add('active');
+            });
+        });
 
-        <!-- Habilidades -->
-        <section id="habilidades" class="section reveal">
-            <div class="section-header">
-                <span class="section-subtitle">Tecnologías</span>
-                <h2 class="section-title">Habilidades Técnicas</h2>
-            </div>
+        /* ==========================================================================
+           2. TYPEWRITER ANIMATION
+           ========================================================================== */
+        const phrases = [
+            'Maquetación Semántica',
+            'JavaScript ES6+',
+            'Python & Flask APIs',
+            'Sistemas IoT & Accesibilidad'
+        ];
+        let pIndex = 0;
+        let cIndex = 0;
+        let isDeleting = false;
+        const typewriterEl = document.getElementById('typewriter');
 
-            <div class="skills-grid">
-                <div class="skill-card">
-                    <i class="fab fa-html5 skill-icon"></i>
-                    <h3>HTML5</h3>
-                    <p>Estructura semántica, limpia y accesible para la web.</p>
-                </div>
+        function handleTypewriter() {
+            const current = phrases[pIndex];
+            if (isDeleting) {
+                typewriterEl.textContent = current.substring(0, cIndex - 1);
+                cIndex--;
+            } else {
+                typewriterEl.textContent = current.substring(0, cIndex + 1);
+                cIndex++;
+            }
 
-                <div class="skill-card">
-                    <i class="fab fa-css3-alt skill-icon"></i>
-                    <h3>CSS3</h3>
-                    <p>Diseño responsivo, Flexbox, Grid y animaciones avanzadas.</p>
-                </div>
+            let speed = isDeleting ? 30 : 70;
 
-                <div class="skill-card">
-                    <i class="fab fa-js skill-icon"></i>
-                    <h3>JavaScript</h3>
-                    <p>Lógica dinámica, manipulación del DOM y consumo de APIs.</p>
-                </div>
+            if (!isDeleting && cIndex === current.length) {
+                speed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && cIndex === 0) {
+                isDeleting = false;
+                pIndex = (pIndex + 1) % phrases.length;
+                speed = 400;
+            }
 
-                <div class="skill-card">
-                    <i class="fab fa-git-alt skill-icon"></i>
-                    <h3>Git</h3>
-                    <p>Control de versiones y flujo de trabajo estructurado.</p>
-                </div>
+            setTimeout(handleTypewriter, speed);
+        }
+        handleTypewriter();
 
-                <div class="skill-card">
-                    <i class="fab fa-github skill-icon"></i>
-                    <h3>GitHub</h3>
-                    <p>Gestión de repositorios y despliegue continuo con GitHub Pages.</p>
-                </div>
-            </div>
-        </section>
+        /* ==========================================================================
+           3. PROJECT FILTERS & INSPECTION MODAL
+           ========================================================================== */
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
 
-        <!-- Proyectos -->
-        <section id="proyectos" class="section reveal">
-            <div class="section-header">
-                <span class="section-subtitle">Portafolio</span>
-                <h2 class="section-title">Proyectos Destacados</h2>
-            </div>
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
 
-            <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">Todos</button>
-                <button class="filter-btn" data-filter="js">JavaScript</button>
-                <button class="filter-btn" data-filter="python">Python / IoT</button>
-                <button class="filter-btn" data-filter="html-css">HTML/CSS</button>
-            </div>
+                const filter = btn.getAttribute('data-filter');
+                projectCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
 
-            <div class="projects-grid">
-                <!-- Proyecto 1: GutenVox -->
-                <article class="project-card" data-category="python">
-                    <div class="project-img">
-                        <!-- Puedes guardar la captura de tu proyecto como 'gutenvox.png' en tu carpeta local o usar una imagen referencial -->
-                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80"
-                            alt="GutenVox - Robot Lector e Intérprete">
-                    </div>
-                    <div class="project-info">
-                        <h3>GutenVox: Robot Lector e Intérprete</h3>
-                        <p>Dispositivo IoT y panel web inteligente capaz de escanear páginas físicas mediante OCR en
-                            tiempo real, traducir texto a múltiples idiomas y sintetizar lectura por voz con motor gTTS.
-                        </p>
-                        <div class="tags">
-                            <span>PYTHON</span><span>FLASK</span><span>OPENCV</span><span>TESSERACT
-                                OCR</span><span>HTML5</span><span>CSS3</span><span>JAVASCRIPT</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i>
-                                Demo</a>
-                            <a href="https://github.com/ArsuPlayer/GutenVox_Web" target="_blank" class="btn-link"><i
-                                    class="fab fa-github"></i> Código</a>
-                        </div>
-                    </div>
-                </article>
+        /* Inspector Modal */
+        const modal = document.getElementById('projectModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDesc = document.getElementById('modalDesc');
+        const closeModalBtn = document.getElementById('closeModalBtn');
 
-                <!-- Proyecto 2: Querido Diario -->
-                <article class="project-card" data-category="python">
-                    <div class="project-img">
-                        <img src="https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=600&q=80"
-                            alt="Querido Diario - Sistema de Gestión Personal">
-                    </div>
-                    <div class="project-info">
-                        <h3>Querido Diario — Sistema de Gestión Personal</h3>
-                        <p>Sistema web completo para el registro de diario personal con autenticación de usuarios,
-                            notificaciones flotantes interactivas (Toasts) y manejo de errores 404.</p>
-                        <div class="tags">
-                            <span>PYTHON</span><span>FLASK</span><span>MYSQL</span><span>BOOTSTRAP
-                                5</span><span>GIT</span><span>GITHUB</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" target="_blank" class="btn-link"><i
-                                    class="fas fa-external-link-alt"></i> Demo</a>
-                            <a href="https://github.com/ArsuPlayer/certificacion_2_matias_rios_2026_10_20"
-                                target="_blank" class="btn-link"><i class="fab fa-github"></i> Código</a>
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </section>
+        document.querySelectorAll('.inspect-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                modalTitle.textContent = btn.getAttribute('data-title');
+                modalDesc.textContent = btn.getAttribute('data-desc');
+                modal.classList.add('active');
+            });
+        });
 
-        <!-- Contacto -->
-        <section id="contacto" class="section reveal">
-            <div class="section-header">
-                <span class="section-subtitle">Contacto</span>
-                <h2 class="section-title">Hablemos sobre tu próximo proyecto</h2>
-            </div>
+        closeModalBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
 
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <div>
-                            <h4>Correo Profesional</h4>
-                            <p>matiasrios.rodri@gmail.com</p>
-                        </div>
-                    </div>
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
 
-                    <div class="contact-item">
-                        <i class="fab fa-linkedin"></i>
-                        <div>
-                            <h4>LinkedIn</h4>
-                            <p>linkedin.com/in/matiasrios-dev</p>
-                        </div>
-                    </div>
+        /* ==========================================================================
+           4. CONTACT FORM HANDLING
+           ========================================================================== */
+       const contactForm = document.getElementById('contactForm');
+        const formFeedback = document.getElementById('formFeedback');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnIcon = document.getElementById('btnIcon');
 
-                    <div class="social-links">
-                        <a href="https://linkedin.com" target="_blank" class="social-btn" aria-label="LinkedIn"><i
-                                class="fab fa-linkedin-in"></i></a>
-                        <a href="https://github.com/ArsuPlayer" target="_blank" class="social-btn"
-                            aria-label="GitHub"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const nameVal = document.getElementById('name').value.trim();
+            const emailVal = document.getElementById('email').value.trim();
+            const messageVal = document.getElementById('message').value.trim();
 
-                <form id="contactForm" class="contact-form">
-                    <div class="form-group">
-                        <input type="text" id="name" placeholder="Tu Nombre Completo" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" id="email" placeholder="Tu Correo Electrónico" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="message" rows="4" placeholder="Escribe tu mensaje aquí..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        Enviar Mensaje <i class="fas fa-paper-plane"></i>
-                    </button>
-                    <p id="formStatus" style="font-size:0.9rem; text-align:center; display:none;"></p>
-                </form>
-            </div>
-        </section>
-    </main>
+            if (!nameVal || !emailVal || !messageVal) {
+                formFeedback.style.color = 'var(--red-main)';
+                formFeedback.textContent = '[ERROR]: Por favor completa todos los campos.';
+                return;
+            }
 
-    <footer>
-        <p>&copy; 2026 Matías Ríos. Diseñado y construido con HTML, CSS y JavaScript.</p>
-    </footer>
+            // Processing UI State
+            submitBtn.disabled = true;
+            btnText.textContent = 'TRANSMITIENDO...';
+            btnIcon.className = 'fas fa-spinner fa-spin';
+            formFeedback.style.color = 'var(--cyan-accent)';
+            formFeedback.textContent = '[SISTEMA]: ESTABLECIENDO CONEXIÓN SECTORIAL...';
 
-    <!-- Script Principal -->
-    <script src="script.js"></script>
+            const payload = new FormData(contactForm);
+
+            try {
+                const res = await fetch(contactForm.action, {
+                    method: 'POST',
+                    body: payload,
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (res.ok) {
+                    formFeedback.style.color = 'var(--cyan-accent)';
+                    formFeedback.textContent = '[SISTEMA]: MENSAJE TRANSMITIDO CON ÉXITO A MATÍAS RÍOS.';
+                    contactForm.reset();
+                } else {
+                    throw new Error('Servidor Formspree no respondió OK');
+                }
+            } catch (err) {
+                // Graceful fallback to mailto if endpoint is unreachable or fails
+                formFeedback.style.color = '#ffcc00';
+                formFeedback.textContent = '[ADVERTENCIA]: Servidor no disponible. Abriendo cliente de correo local...';
+                
+                const mailtoUrl = `mailto:matiasrios.rodri@gmail.com?subject=Contacto Portafolio - ${encodeURIComponent(nameVal)}&body=${encodeURIComponent("Nombre: " + nameVal + "\nCorreo: " + emailVal + "\n\nMensaje:\n" + messageVal)}`;
+                
+                setTimeout(() => {
+                    window.location.href = mailtoUrl;
+                }, 1000);
+            } finally {
+                submitBtn.disabled = false;
+                btnText.textContent = 'Enviar Mensaje';
+                btnIcon.className = 'fas fa-paper-plane';
+            }
+        });
+    </script>
 </body>
-
 </html>
