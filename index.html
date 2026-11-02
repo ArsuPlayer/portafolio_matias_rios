@@ -1,286 +1,1060 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="dark">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matías Ríos | Desarrollador Web</title>
+    <title>Matías Ríos // Portafolio</title>
 
-    <!-- Hoja de Estilos Principal -->
-    <link rel="stylesheet" href="style.css">
-
-    <!-- FontAwesome para Iconos -->
+    <!-- External Libraries & Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Fira+Code:wght@400;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+            OPALINE LIGHT PALETTE & CLEAN 2-COLUMN LAYOUT
+           ========================================================================== */
+        :root {
+            --bg-main: #F4F4F6;
+            --sidebar-bg: #E7E7E7;
+            --card-bg: #FFFFFF;
+            --card-border: #D2D2D4;
+            --primary-accent: #dd2a2a;
+            --primary-accent-hover: #971e1e;
+            --text-heading: #1E1E24;
+            --text-body: #2C2C35;
+            --text-muted: #62626F;
+            --font-code: 'Fira Code', monospace;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            background-color: var(--bg-main) !important;
+            color: var(--text-body);
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        body.portfolio-body {
+            display: flex;
+            position: relative;
+        }
+
+        /* --------------------------------------------------------------------------
+            SIDEBAR (Fixed Left 280px)
+           -------------------------------------------------------------------------- */
+        .sidebar-panel {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--card-border);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1.25rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .profile-card {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            width: 125px;
+            height: 125px;
+            margin: 0 auto 1rem;
+        }
+
+        .avatar-wrapper img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary-accent);
+            box-shadow: 0 4px 10px rgba(255, 99, 74, 0.2);
+        }
+
+        .status-badge {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            width: 14px;
+            height: 14px;
+            background-color: #10B981;
+            border: 2px solid var(--sidebar-bg);
+            border-radius: 50%;
+        }
+
+        .profile-name {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            letter-spacing: -0.5px;
+        }
+
+        .profile-name span {
+            color: var(--primary-accent);
+        }
+
+        .profile-role {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+            font-family: var(--font-code);
+            font-weight: 600;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar-navigation {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex: 1;
+        }
+
+        .nav-link {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-body);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .nav-link i {
+            color: var(--primary-accent);
+            width: 18px;
+        }
+
+        .nav-link:hover {
+            color: var(--text-heading);
+            background-color: rgba(255, 99, 74, 0.1);
+        }
+
+        .nav-link.active {
+            color: #FFFFFF !important;
+            background-color: var(--primary-accent) !important;
+            border-color: var(--primary-accent) !important;
+            box-shadow: 0 4px 12px rgba(255, 99, 74, 0.25);
+        }
+
+        .nav-link.active i {
+            color: #FFFFFF !important;
+        }
+
+        .sidebar-footer {
+            border-top: 1px solid var(--card-border);
+            padding-top: 1rem;
+            text-align: center;
+        }
+
+        .sys-version {
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* --------------------------------------------------------------------------
+            MAIN CONTENT AREA (Right Panel)
+           -------------------------------------------------------------------------- */
+        .content-area {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 2.5rem 3rem;
+            max-width: 1100px;
+            min-height: 100vh;
+        }
+
+        .content-module {
+            display: none;
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        .content-module.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--card-border);
+            padding-bottom: 0.75rem;
+        }
+
+        .section-tag {
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            color: var(--primary-accent);
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .section-header h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            margin-top: 0.2rem;
+        }
+
+        /* Cards & Grids */
+        .glass-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.8rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .glass-card h3 {
+            font-size: 1.2rem;
+            color: var(--text-heading);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .glass-card p {
+            color: var(--text-body);
+            line-height: 1.65;
+            margin-bottom: 1rem;
+        }
+
+        .glass-card p strong {
+            color: var(--text-heading);
+        }
+
+        .typewriter-badge {
+            background-color: var(--sidebar-bg);
+            border: 1px solid var(--card-border);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: var(--text-heading);
+        }
+
+        .highlight {
+            color: var(--primary-accent);
+            font-weight: 700;
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .meta-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 0.5rem;
+        }
+
+        .meta-label {
+            color: var(--text-muted);
+        }
+
+        .meta-value {
+            font-weight: 600;
+            color: var(--text-heading);
+        }
+
+        .text-accent {
+            color: var(--primary-accent);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Habilidades */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-box {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        .skill-box:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary-accent);
+            box-shadow: 0 6px 16px rgba(255, 99, 74, 0.12);
+        }
+
+        .skill-icon-wrap {
+            font-size: 2.2rem;
+            color: var(--primary-accent);
+        }
+
+        .skill-info h3 {
+            font-size: 1.05rem;
+            color: var(--text-heading);
+            margin-bottom: 0.4rem;
+        }
+
+        .skill-info p {
+            color: var(--text-body);
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        /* Proyectos y Filtros */
+        .filter-bar {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .filter-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-body);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background-color: var(--primary-accent);
+            color: #FFFFFF;
+            border-color: var(--primary-accent);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+        }
+
+        .project-thumb {
+            position: relative;
+            height: 170px;
+        }
+
+        .project-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--primary-accent);
+            color: #FFFFFF;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: var(--font-code);
+        }
+
+        .project-tag.accent {
+            background-color: var(--text-heading);
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-content h3 {
+            font-size: 1.15rem;
+            color: var(--text-heading);
+            margin-bottom: 0.6rem;
+        }
+
+        .project-content p {
+            color: var(--text-body);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-bottom: 1.2rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .tech-stack span {
+            background-color: var(--sidebar-bg);
+            border: 1px solid var(--card-border);
+            color: var(--primary-accent);
+            font-family: var(--font-code);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .project-buttons {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-action {
+            background-color: var(--primary-accent);
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background-color 0.2s, opacity 0.2s;
+        }
+
+        .btn-action.outline {
+            background: transparent;
+            border: 1px solid var(--card-border);
+            color: var(--text-heading);
+        }
+
+        .btn-action:hover {
+            opacity: 0.9;
+        }
+
+        .btn-action.outline:hover {
+            border-color: var(--primary-accent);
+            color: var(--primary-accent);
+        }
+
+        /* Contacto */
+        .contact-item {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .icon-box {
+            width: 42px;
+            height: 42px;
+            background-color: var(--sidebar-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-accent);
+            font-size: 1.2rem;
+        }
+
+        .item-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .item-link {
+            color: var(--text-heading);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .item-link:hover {
+            color: var(--primary-accent);
+        }
+
+        .social-bar {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-bar a {
+            width: 40px;
+            height: 40px;
+            background-color: var(--sidebar-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            color: var(--text-heading);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .social-bar a:hover {
+            background-color: var(--primary-accent);
+            color: #FFFFFF;
+            border-color: var(--primary-accent);
+        }
+
+        .form-field {
+            margin-bottom: 1rem;
+        }
+
+        .form-field input,
+        .form-field textarea {
+            width: 100%;
+            background-color: var(--bg-main);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 0.8rem;
+            color: var(--text-heading);
+            font-family: var(--font-sans);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-field input:focus,
+        .form-field textarea:focus {
+            border-color: var(--primary-accent);
+            background-color: #FFFFFF;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: var(--primary-accent);
+            border: none;
+            border-radius: 8px;
+            color: #FFFFFF;
+            padding: 0.8rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background-color 0.2s, opacity 0.2s;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.9;
+        }
+
+        .form-status {
+            margin-top: 1rem;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+        }
+
+        .form-status.success {
+            color: #10B981;
+        }
+
+        .form-status.error {
+            color: var(--primary-accent);
+        }
+
+        .main-footer {
+            border-top: 1px solid var(--card-border);
+            padding-top: 1.5rem;
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsivo */
+        @media (max-width: 850px) {
+            body.portfolio-body {
+                flex-direction: column;
+            }
+
+            .sidebar-panel {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid var(--card-border);
+            }
+
+            .content-area {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+
+            .grid-2col {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
-<body>
+<body class="portfolio-body">
 
-    <!-- Luces de Fondo Dinámicas -->
-    <div class="bg-glow"></div>
-    <div class="bg-glow-2"></div>
-
-    <!-- Navegación -->
-    <header>
-        <nav class="navbar">
-            <a href="#inicio" class="logo">&lt;Matías<span>Ríos</span> /&gt;</a>
-
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="#inicio" class="nav-link active">Inicio</a></li>
-                <li><a href="#sobre-mi" class="nav-link">Sobre Mí</a></li>
-                <li><a href="#habilidades" class="nav-link">Habilidades</a></li>
-                <li><a href="#proyectos" class="nav-link">Proyectos</a></li>
-                <li><a href="#contacto" class="nav-link">Contacto</a></li>
-            </ul>
-
-            <div class="nav-actions">
-                <button class="theme-btn" id="themeToggle" aria-label="Cambiar tema">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
-                    <i class="fas fa-bars"></i>
-                </button>
+    <!-- Panel Lateral Izquierdo (Fijo) -->
+    <aside class="sidebar-panel">
+        <div class="profile-card">
+            <div class="avatar-wrapper">
+                <img src="profile.jpg"
+                    alt="Matías Ríos Avatar">
+                <span class="status-badge" title="Disponible para proyectos"></span>
             </div>
-        </nav>
-    </header>
-
-    <main>
-        <!-- Hero Section -->
-        <section id="inicio" class="hero">
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <i class="fas fa-circle-dot"></i> Disponible para Proyectos y Prácticas
-                </div>
-                <h1> <span>Matías Ríos</span></h1>
-                <div class="typewriter-text">
-                    Desarrollador <span id="typewriter"></span>
-                </div>
-                <p>Soy un estudiante apasionado en Skillnest construyendo soluciones web funcionales, modernas y
-                    atractivas para el público.</p>
-
-                <div class="hero-buttons">
-                    <a href="#proyectos" class="btn btn-primary">
-                        Ver Mis Proyectos <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <a href="#contacto" class="btn btn-secondary">
-                        Contáctame <i class="fas fa-envelope"></i>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Banner Marquee -->
-        <div class="marquee-container">
-            <div class="marquee-content">
-                <div class="marquee-item"><i class="fab fa-html5"></i> HTML5</div>
-                <div class="marquee-item"><i class="fab fa-css3-alt"></i> CSS3</div>
-                <div class="marquee-item"><i class="fab fa-js"></i> JavaScript</div>
-                <div class="marquee-item"><i class="fab fa-git-alt"></i> Git</div>
-                <div class="marquee-item"><i class="fab fa-github"></i> GitHub</div>
-                <div class="marquee-item"><i class="fas fa-mobile-screen"></i> Responsive Design</div>
-                <!-- Duplicado para loop continuo -->
-                <div class="marquee-item"><i class="fab fa-html5"></i> HTML5</div>
-                <div class="marquee-item"><i class="fab fa-css3-alt"></i> CSS3</div>
-                <div class="marquee-item"><i class="fab fa-js"></i> JavaScript</div>
-                <div class="marquee-item"><i class="fab fa-git-alt"></i> Git</div>
-                <div class="marquee-item"><i class="fab fa-github"></i> GitHub</div>
-            </div>
+            <h1 class="profile-name">Matías <span>Ríos</span></h1>
+            <p class="profile-role"><i class="fas fa-code"></i> Front-End Developer</p>
         </div>
 
-        <!-- Sobre Mí -->
-        <section id="sobre-mi" class="section reveal">
-            <div class="section-header">
-                <span class="section-subtitle">Conóceme</span>
-                <h2 class="section-title">Sobre Mí & Presentación</h2>
+        <nav class="sidebar-navigation">
+            <button class="nav-link active" data-tab="sobre-mi">
+                <i class="fas fa-user-circle"></i> <span>Sobre Mí</span>
+            </button>
+            <button class="nav-link" data-tab="habilidades">
+                <i class="fas fa-laptop-code"></i> <span>Habilidades</span>
+            </button>
+            <button class="nav-link" data-tab="proyectos">
+                <i class="fas fa-cubes"></i> <span>Proyectos</span>
+            </button>
+            <button class="nav-link" data-tab="contacto">
+                <i class="fas fa-paper-plane"></i> <span>Contacto</span>
+            </button>
+        </nav>
+
+        <div class="sidebar-footer">
+            <p class="sys-version">PORTAFOLIO</p>
+        </div>
+    </aside>
+
+    <!-- Área Principal de Contenido -->
+    <main class="content-area">
+
+        <!-- Sección 1: Sobre Mí -->
+        <section id="sobre-mi" class="content-module active">
+            <header class="section-header">
+                <span class="section-tag">// PRESENTACIÓN</span>
+                <h2>Sobre Mí</h2>
+            </header>
+
+            <div class="glass-card main-bio">
+                <h3>Desarrollador Web Front-End</h3>
+                <p>Soy <strong>Matías Ríos</strong>, desarrollador web enfocado en construir experiencias digitales
+                    limpias, responsivas y de alto impacto visual.</p>
+                <p>A lo largo del programa <strong>Skillnest 2026</strong>, he fortalecido competencias en maquetación
+                    semántica, programación moderna en JavaScript ES6+ y arquitectura backend ligera en Python con
+                    Flask.</p>
+
+                <div class="typewriter-badge">
+                    <span class="lbl">ESPECIALIDAD:</span>
+                    <span id="typewriter" class="highlight"></span>
+                </div>
             </div>
 
-            <div class="about-grid">
-                <div class="about-card">
-                    <p>¡Hola! Soy <strong>Matías Ríos</strong>, desarrollador web front-end en formación continua dentro
-                        del programa <strong>Skillnest</strong>.</p>
-                    <p>Me enfoco en transformar ideas en código estructurado, accesible y visualmente impactante. Mi
-                        viaje en la programación me ha llevado a adquirir habilidades sólidas en la web moderna y
-                        control de versiones.</p>
-                    <p>Busco constantes desafíos que me permitan crecer profesionalmente e incorporarme a equipos
-                        colaborativos de desarrollo.</p>
+            <div class="grid-2col">
+                <div class="glass-card">
+                    <h3>Estado Profesional</h3>
+                    <div class="meta-list">
+                        <div class="meta-row">
+                            <span class="meta-label">Programa:</span>
+                            <span class="meta-value">Skillnest 2026</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-label">Disponibilidad:</span>
+                            <span class="meta-value text-accent">Proyectos / Prácticas</span>
+                        </div>
+                        <div class="meta-row">
+                            <span class="meta-label">Stack Principal:</span>
+                            <span class="meta-value">JS / Python / IoT</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="video-container">
-                    <div class="video-wrapper">
-                        <!-- Reemplaza el src con tu video de presentación de YouTube/Vimeo -->
-                        <iframe src="https://www.youtube.com/embed/" title="Video de presentación de Matías Ríos"
-                            allowfullscreen></iframe>
+                <div class="glass-card">
+                    <h3>Video de Presentación</h3>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed"
+                            title="Video de presentación de Matías Ríos" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Habilidades -->
-        <section id="habilidades" class="section reveal">
-            <div class="section-header">
-                <span class="section-subtitle">Tecnologías</span>
-                <h2 class="section-title">Habilidades Técnicas</h2>
-            </div>
+        <!-- Sección 2: Habilidades -->
+        <section id="habilidades" class="content-module">
+            <header class="section-header">
+                <span class="section-tag">// COMPETENCIAS</span>
+                <h2>Habilidades Técnicas</h2>
+            </header>
 
             <div class="skills-grid">
-                <div class="skill-card">
-                    <i class="fab fa-html5 skill-icon"></i>
-                    <h3>HTML5</h3>
-                    <p>Estructura semántica, limpia y accesible para la web.</p>
+                <div class="skill-box">
+                    <div class="skill-icon-wrap"><i class="fab fa-html5"></i></div>
+                    <div class="skill-info">
+                        <h3>HTML5 & CSS3</h3>
+                        <p>Diseño web accesible, maquetación semántica, Flexbox y CSS Grid altamente responsivo.</p>
+                    </div>
                 </div>
 
-                <div class="skill-card">
-                    <i class="fab fa-css3-alt skill-icon"></i>
-                    <h3>CSS3</h3>
-                    <p>Diseño responsivo, Flexbox, Grid y animaciones avanzadas.</p>
+                <div class="skill-box">
+                    <div class="skill-icon-wrap"><i class="fab fa-js"></i></div>
+                    <div class="skill-info">
+                        <h3>JavaScript ES6+</h3>
+                        <p>Desarrollo interactivo, manipulación eficiente del DOM, promesas y consumo de APIs
+                            async/await.</p>
+                    </div>
                 </div>
 
-                <div class="skill-card">
-                    <i class="fab fa-js skill-icon"></i>
-                    <h3>JavaScript</h3>
-                    <p>Lógica dinámica, manipulación del DOM y consumo de APIs.</p>
+                <div class="skill-box">
+                    <div class="skill-icon-wrap"><i class="fab fa-python"></i></div>
+                    <div class="skill-info">
+                        <h3>Python & Flask</h3>
+                        <p>Creación de APIs RESTful, enrutamiento backend y conexión con bases de datos MySQL.</p>
+                    </div>
                 </div>
 
-                <div class="skill-card">
-                    <i class="fab fa-git-alt skill-icon"></i>
-                    <h3>Git</h3>
-                    <p>Control de versiones y flujo de trabajo estructurado.</p>
-                </div>
-
-                <div class="skill-card">
-                    <i class="fab fa-github skill-icon"></i>
-                    <h3>GitHub</h3>
-                    <p>Gestión de repositorios y despliegue continuo con GitHub Pages.</p>
+                <div class="skill-box">
+                    <div class="skill-icon-wrap"><i class="fab fa-git-alt"></i></div>
+                    <div class="skill-info">
+                        <h3>Git & GitHub</h3>
+                        <p>Gestión de versiones de código, flujos de trabajo en ramas y despliegue continuo.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Proyectos -->
-        <section id="proyectos" class="section reveal">
-            <div class="section-header">
-                <span class="section-subtitle">Portafolio</span>
-                <h2 class="section-title">Proyectos Destacados</h2>
-            </div>
+        <!-- Sección 3: Proyectos -->
+        <section id="proyectos" class="content-module">
+            <header class="section-header">
+                <span class="section-tag">// TRABAJOS RECIENTES</span>
+                <h2>Proyectos</h2>
 
-            <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">Todos</button>
-                <button class="filter-btn" data-filter="js">JavaScript</button>
-                <button class="filter-btn" data-filter="python">Python / IoT</button>
-                <button class="filter-btn" data-filter="html-css">HTML/CSS</button>
-            </div>
+                <div class="filter-bar">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="js">JS / IoT</button>
+                    <button class="filter-btn" data-filter="python">Python / Flask</button>
+                </div>
+            </header>
 
             <div class="projects-grid">
-                <!-- Proyecto 1: GutenVox -->
-                <article class="project-card" data-category="python">
-                    <div class="project-img">
-                        <!-- Puedes guardar la captura de tu proyecto como 'gutenvox.png' en tu carpeta local o usar una imagen referencial -->
+                <!-- GutenVox -->
+                <article class="project-card" data-category="js">
+                    <div class="project-thumb">
                         <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80"
-                            alt="GutenVox - Robot Lector e Intérprete">
+                            alt="GutenVox">
+                        <span class="project-tag">DESTACADO</span>
                     </div>
-                    <div class="project-info">
+                    <div class="project-content">
                         <h3>GutenVox: Robot Lector e Intérprete</h3>
                         <p>Dispositivo IoT y panel web inteligente capaz de escanear páginas físicas mediante OCR en
                             tiempo real, traducir texto a múltiples idiomas y sintetizar lectura por voz con motor gTTS.
                         </p>
-                        <div class="tags">
-                            <span>PYTHON</span><span>FLASK</span><span>OPENCV</span><span>TESSERACT
-                                OCR</span><span>HTML5</span><span>CSS3</span><span>JAVASCRIPT</span>
+                        <div class="tech-stack">
+                            <span>PYTHON</span><span>FLASK</span><span>OPENCV</span><span>TESSERACT</span><span>JS</span>
                         </div>
-                        <div class="project-links">
-                            <a href="#" target="_blank" class="btn-link"><i class="fas fa-external-link-alt"></i>
-                                Demo</a>
-                            <a href="https://github.com/ArsuPlayer/GutenVox_Web" target="_blank" class="btn-link"><i
-                                    class="fab fa-github"></i> Código</a>
+                        <div class="project-buttons">
+                            <a href="#" class="btn-action outline"><i class="fab fa-github"></i> Código</a>
                         </div>
                     </div>
                 </article>
 
-                <!-- Proyecto 2: Querido Diario -->
+                <!-- Querido Diario -->
                 <article class="project-card" data-category="python">
-                    <div class="project-img">
+                    <div class="project-thumb">
                         <img src="https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=600&q=80"
-                            alt="Querido Diario - Sistema de Gestión Personal">
+                            alt="Querido Diario">
+                        <span class="project-tag accent">ONLINE</span>
                     </div>
-                    <div class="project-info">
-                        <h3>Querido Diario — Sistema de Gestión Personal</h3>
+                    <div class="project-content">
+                        <h3>Querido Diario — Gestión Personal</h3>
                         <p>Sistema web completo para el registro de diario personal con autenticación de usuarios,
                             notificaciones flotantes interactivas (Toasts) y manejo de errores 404.</p>
-                        <div class="tags">
-                            <span>PYTHON</span><span>FLASK</span><span>MYSQL</span><span>BOOTSTRAP
-                                5</span><span>GIT</span><span>GITHUB</span>
+                        <div class="tech-stack">
+                            <span>PYTHON</span><span>FLASK</span><span>MYSQL</span><span>BOOTSTRAP 5</span>
                         </div>
-                        <div class="project-links">
-                            <a href="#" target="_blank" class="btn-link"><i
-                                    class="fas fa-external-link-alt"></i> Demo</a>
-                            <a href="https://github.com/ArsuPlayer/certificacion_2_matias_rios_2026_10_20"
-                                target="_blank" class="btn-link"><i class="fab fa-github"></i> Código</a>
+                        <div class="project-buttons">
+                            <a href="https://github.com/ArsuPlayer/GutenVox_Web"
+                                target="_blank" class="btn-action outline"><i class="fab fa-github"></i> Código</a>
                         </div>
                     </div>
                 </article>
             </div>
         </section>
 
-        <!-- Contacto -->
-        <section id="contacto" class="section reveal">
-            <div class="section-header">
-                <span class="section-subtitle">Contacto</span>
-                <h2 class="section-title">Hablemos sobre tu próximo proyecto</h2>
-            </div>
+        <!-- Sección 4: Contacto -->
+        <section id="contacto" class="content-module">
+            <header class="section-header">
+                <span class="section-tag">// COMUNICACIÓN</span>
+                <h2>Contacto</h2>
+            </header>
 
-            <div class="contact-grid">
-                <div class="contact-info">
+            <div class="grid-2col">
+                <div class="glass-card">
+                    <h3>Canales Directos</h3>
+
                     <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
+                        <div class="icon-box"><i class="fas fa-envelope"></i></div>
                         <div>
-                            <h4>Correo Profesional</h4>
-                            <p>matiasrios.rodri@gmail.com</p>
+                            <span class="item-label">Correo Electrónico</span>
+                            <a href="mailto:matiasrios.rodri@gmail.com" class="item-link">matiasrios.rodri@gmail.com</a>
                         </div>
                     </div>
 
                     <div class="contact-item">
-                        <i class="fab fa-linkedin"></i>
+                        <div class="icon-box"><i class="fab fa-linkedin"></i></div>
                         <div>
-                            <h4>LinkedIn</h4>
-                            <p>linkedin.com/in/matiasrios-dev</p>
+                            <span class="item-label">LinkedIn</span>
+                            <a href="https://www.linkedin.com/in/matiasrios-dev" target="_blank"
+                                class="item-link">linkedin.com/in/matiasrios-dev</a>
                         </div>
                     </div>
 
-                    <div class="social-links">
-                        <a href="https://linkedin.com" target="_blank" class="social-btn" aria-label="LinkedIn"><i
+                    <div class="social-bar">
+                        <a href="https://www.linkedin.com/in/matiasrios-dev" target="_blank" aria-label="LinkedIn"><i
                                 class="fab fa-linkedin-in"></i></a>
-                        <a href="https://github.com/ArsuPlayer" target="_blank" class="social-btn"
-                            aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="https://github.com/ArsuPlayer" target="_blank" aria-label="GitHub"><i
+                                class="fab fa-github"></i></a>
                     </div>
                 </div>
 
-                <form id="contactForm" class="contact-form">
-                    <div class="form-group">
-                        <input type="text" id="name" placeholder="Tu Nombre Completo" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" id="email" placeholder="Tu Correo Electrónico" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="message" rows="4" placeholder="Escribe tu mensaje aquí..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        Enviar Mensaje <i class="fas fa-paper-plane"></i>
-                    </button>
-                    <p id="formStatus" style="font-size:0.9rem; text-align:center; display:none;"></p>
-                </form>
+                <div class="glass-card">
+                    <h3>Enviar Mensaje</h3>
+                    <form id="contactForm" action="https://formspree.io/f/mjyyooza" method="POST">
+                        <div class="form-field">
+                            <input type="text" id="name" name="name" placeholder="Tu Nombre Completo" required>
+                        </div>
+                        <div class="form-field">
+                            <input type="email" id="email" name="email" placeholder="Tu Correo Electrónico" required>
+                        </div>
+                        <div class="form-field">
+                            <textarea id="message" name="message" rows="4" placeholder="Escribe tu mensaje aquí..."
+                                required></textarea>
+                        </div>
+                        <button type="submit" id="submitBtn" class="btn-submit">
+                            Enviar Mensaje <i class="fas fa-paper-plane"></i>
+                        </button>
+                        <div id="formStatus" class="form-status"></div>
+                    </form>
+                </div>
             </div>
         </section>
+
+        <footer class="main-footer">
+            <p>&copy; 2026 Matías Ríos</p>
+        </footer>
+
     </main>
 
-    <footer>
-        <p>&copy; 2026 Matías Ríos. Diseñado y construido con HTML, CSS y JavaScript.</p>
-    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
 
-    <!-- Script Principal -->
-    <script src="script.js"></script>
+            // 1. Tab Navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            const modules = document.querySelectorAll('.content-module');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    const targetTab = link.getAttribute('data-tab');
+
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    modules.forEach(m => m.classList.remove('active'));
+
+                    link.classList.add('active');
+                    const targetModule = document.getElementById(targetTab);
+                    if (targetModule) {
+                        targetModule.classList.add('active');
+                    }
+
+                    if (window.innerWidth <= 850) {
+                        document.querySelector('.content-area').scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // 2. Typewriter Effect
+            const typewriterElement = document.getElementById('typewriter');
+            const roles = ['JavaScript ES6+', 'Python & Flask', 'Sistemas IoT', 'Maquetación Web'];
+            let roleIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+
+            function typeEffect() {
+                if (!typewriterElement) return;
+                const currentRole = roles[roleIndex];
+
+                if (isDeleting) {
+                    typewriterElement.textContent = currentRole.substring(0, charIndex - 1);
+                    charIndex--;
+                } else {
+                    typewriterElement.textContent = currentRole.substring(0, charIndex + 1);
+                    charIndex++;
+                }
+
+                let speed = isDeleting ? 35 : 75;
+
+                if (!isDeleting && charIndex === currentRole.length) {
+                    speed = 1800;
+                    isDeleting = true;
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    roleIndex = (roleIndex + 1) % roles.length;
+                    speed = 400;
+                }
+
+                setTimeout(typeEffect, speed);
+            }
+
+            typeEffect();
+
+            // 3. Project Category Filter
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const projectCards = document.querySelectorAll('.project-card');
+
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const filter = btn.getAttribute('data-filter');
+
+                    projectCards.forEach(card => {
+                        if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // 4. Contact Form Handler (Formspree + Mailto fallback)
+            const contactForm = document.getElementById('contactForm');
+            const formStatus = document.getElementById('formStatus');
+            const submitBtn = document.getElementById('submitBtn');
+
+            if (contactForm) {
+                contactForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = 'Enviando... <i class="fas fa-spinner fa-spin"></i>';
+                    formStatus.className = 'form-status';
+                    formStatus.textContent = '';
+
+                    const formData = new FormData(contactForm);
+
+                    try {
+                        const response = await fetch(contactForm.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: { 'Accept': 'application/json' }
+                        });
+
+                        if (response.ok) {
+                            formStatus.className = 'form-status success';
+                            formStatus.textContent = '✔ Mensaje enviado exitosamente.';
+                            contactForm.reset();
+                        } else {
+                            throw new Error('Servidor no disponible.');
+                        }
+                    } catch (err) {
+                        formStatus.className = 'form-status error';
+                        formStatus.textContent = '⚠ Error al conectar. Abriendo tu aplicación de correo...';
+
+                        const name = document.getElementById('name').value;
+                        const email = document.getElementById('email').value;
+                        const message = document.getElementById('message').value;
+
+                        const mailtoLink = `mailto:matias.rios.dev@gmail.com?subject=Contacto Portafolio - ${encodeURIComponent(name)}&body=${encodeURIComponent(`De: ${name} (${email})\n\nMensaje:\n${message}`)}`;
+
+                        setTimeout(() => {
+                            window.location.href = mailtoLink;
+                        }, 1000);
+                    } finally {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Enviar Mensaje <i class="fas fa-paper-plane"></i>';
+                    }
+                });
+            }
+
+        });
+    </script>
 </body>
+
 </html>
